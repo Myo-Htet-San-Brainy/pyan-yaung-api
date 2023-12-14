@@ -1,5 +1,5 @@
 {
-  "name": "21days_backend",
+  "name": "Pyan-Yaung-Backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
-  "author": "Technophilia Lab",
+  "author": "Myo Htet San(Brainy)",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
