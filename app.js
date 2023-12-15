@@ -30,7 +30,7 @@ app.use(cookieParser(process.env.JWT_SECRET));
 
 //routes
 app.get("/", async (req, res) => {
-  res.send("hi mom");
+  res.send("hello world!");
 });
 
 //lower order middleware
