@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const rateLimiter = require("express-rate-limit");
+const fileUpload = require("express-fileupload");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const cors = require("cors");
@@ -21,6 +21,9 @@ const authorize = require("./middleware/authorization");
 const authRouter = require("./routers/authRouter");
 const productRouter = require("./routers/productRouter");
 
+//configs
+require("./config/cloudinaryConfig");
+
 //middleware
 app.use(morgan("tiny"));
 app.set("trust proxy", 1);
@@ -30,6 +33,11 @@ app.use(xss());
 app.use(mongoSanitize());
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
+app.use(
+  fileUpload({
+    useTempFiles: true,
+  })
+);
 
 //routes
 app.get("/", authorize, async (req, res) => {

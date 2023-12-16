@@ -1,27 +1,55 @@
+//packages
+var cloudinary = require("cloudinary").v2;
 const { StatusCodes } = require("http-status-codes");
+
+//imports
+const Product = require("../models/productModel");
 
 const currentUserProducts = async (req, res) => {
   const { userId } = req.user;
+  const products = await Product.find({ userId });
   res.status(StatusCodes.OK).json({
     message: "Success",
-    data: {},
+    data: products,
   });
 };
 
 const getProducts = async (req, res) => {
-  res.send("Products");
+  const products = await Product.find({});
+  res.status(StatusCodes.OK).json({ data: products });
 };
 
 const createProduct = async (req, res) => {
-  res.send("created product");
+  const { userId } = req.user;
+  const product = {
+    ...req.body,
+    userId,
+  };
+  await Product.create(product);
+  res.status(StatusCodes.CREATED).send("Product created");
 };
 
 const getSingleProduct = async (req, res) => {
-  res.send("Single Product");
+  const { id: productId } = req.params;
+  const product = await Product.findById(productId);
+  res.status(StatusCodes.OK).json({ data: product });
 };
 
 const deleteSingleProduct = async (req, res) => {
-  res.send("deleted");
+  const { id: productId } = req.params;
+  await Product.findByIdAndDelete(productId);
+  res.status(StatusCodes.OK).send("Product deleted");
+};
+
+const uploadProductImage = async (req, res) => {
+  const dataAboutUpload = await cloudinary.uploader.upload(
+    req.files.car.tempFilePath,
+    {
+      use_filename: true,
+      folder: "pyan-pyaung",
+    }
+  );
+  res.status(StatusCodes.OK).json({ data: dataAboutUpload.secure_url });
 };
 
 module.exports = {
@@ -30,4 +58,5 @@ module.exports = {
   getProducts,
   getSingleProduct,
   deleteSingleProduct,
+  uploadProductImage,
 };

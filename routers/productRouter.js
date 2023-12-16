@@ -11,10 +11,12 @@ const {
   getProducts,
   getSingleProduct,
   deleteSingleProduct,
+  uploadProductImage,
 } = require("../controllers/productController");
 
 router.post("/", authorize, createProduct);
 router.get("/", getProducts);
+router.post("/upload-product-image", authorize, uploadProductImage);
 router.get("/current-user-products", authorize, currentUserProducts);
 router.get("/:id", getSingleProduct);
 router.delete("/:id", [authorize, productOwn], deleteSingleProduct);
