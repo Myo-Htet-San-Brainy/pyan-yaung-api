@@ -15,8 +15,10 @@ const mongoSanitize = require("express-mongo-sanitize");
 const connectDB = require("./db/connectDb");
 const notFound = require("./middleware/notFound");
 const errorHandler = require("./middleware/errorHandler");
+const authorize = require("./middleware/authorization");
 
 //router imports
+const authRouter = require("./routers/authRouter");
 
 //middleware
 app.use(morgan("tiny"));
@@ -29,9 +31,11 @@ app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 
 //routes
-app.get("/", async (req, res) => {
+app.get("/", authorize, async (req, res) => {
   res.send("hello world!");
 });
+
+app.use("/api/v1/auth", authRouter);
 
 //lower order middleware
 app.use(notFound);
