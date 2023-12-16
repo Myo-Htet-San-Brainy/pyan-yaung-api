@@ -19,6 +19,7 @@ const authorize = require("./middleware/authorization");
 
 //router imports
 const authRouter = require("./routers/authRouter");
+const productRouter = require("./routers/productRouter");
 
 //middleware
 app.use(morgan("tiny"));
@@ -36,6 +37,7 @@ app.get("/", authorize, async (req, res) => {
 });
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/products", productRouter);
 
 //lower order middleware
 app.use(notFound);
