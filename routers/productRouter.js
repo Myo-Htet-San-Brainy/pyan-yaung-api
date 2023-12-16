@@ -4,7 +4,7 @@ const router = express.Router();
 
 //imports
 const authorize = require("../middleware/authorization");
-const ownWrapper = require("../middleware/own");
+const { productOwn } = require("../middleware/own");
 const {
   currentUserProducts,
   createProduct,
@@ -17,6 +17,6 @@ router.post("/", authorize, createProduct);
 router.get("/", getProducts);
 router.get("/current-user-products", authorize, currentUserProducts);
 router.get("/:id", getSingleProduct);
-router.delete("/:id", [authorize, ownWrapper("model")], deleteSingleProduct);
+router.delete("/:id", [authorize, productOwn], deleteSingleProduct);
 
 module.exports = router;
