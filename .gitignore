@@ -1,4 +1,2 @@
 /node_modules
 .env
-MOCK_DATA.json
-populate.js

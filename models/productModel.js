@@ -14,6 +14,10 @@ const productSchema = new mongoose.Schema(
       required: [true, "Please provide product description."],
       trim: true,
     },
+    category: {
+      type: String,
+      required: [true, "Please provide product category."],
+    },
     image: {
       type: String,
       required: [true, "Please provide product image."],

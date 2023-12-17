@@ -15,7 +15,13 @@ const currentUserProducts = async (req, res) => {
 };
 
 const getProducts = async (req, res) => {
-  const products = await Product.find({});
+  const { category } = req.query;
+  const filterObject = {};
+  //category filter
+  if (category && category !== "All") {
+    filterObject.category = category;
+  }
+  const products = await Product.find(filterObject);
   res.status(StatusCodes.OK).json({ data: products });
 };
 
