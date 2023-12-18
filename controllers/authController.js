@@ -1,12 +1,10 @@
 const User = require("../models/userModel");
-const RefreshToken = require("../models/refreshTokenModel");
 const { StatusCodes } = require("http-status-codes");
 const customError = require("../errors");
 const createHash = require("../utils/createHash");
 const sendVerificationEmail = require("../utils/emails/sendVerificationEmail");
 const sendResetPasswordEmail = require("../utils/emails/sendPasswordResetEmail");
-const { attachCookiesToResponse } = require("../utils/jwt");
-const createUserPayload = require("../utils/createUserPayload");
+const { createJWT } = require("../utils/jwt");
 const crypto = require("crypto");
 
 const register = async (req, res) => {
@@ -101,6 +99,7 @@ const verifyEmail = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
+  //authentication
   if (!email || !password) {
     throw new customError.BadRequest("Please provide email and password");
   }
@@ -114,39 +113,11 @@ const login = async (req, res) => {
   if (!isPasswordCorrect) {
     throw new customError.Unauthenticated("Invalid Credentials");
   }
-  if (!user.isVerified) {
-    throw new customError.Unauthenticated("Please verify your email");
-  }
-  //All the code below is for authorization
-  const tokenUser = createUserPayload(user);
 
-  // create refresh token
-  let refreshToken = "";
-  // check for existing token
-  const existingToken = await RefreshToken.findOne({ user: user._id });
+  //create jwt to send
+  const jwt = createJWT({ userId: user._id });
 
-  if (existingToken) {
-    const { isValid } = existingToken;
-    //isValid check is here just because if sites admin become sus of a user they can change this 'isValid' to false and that one user wouldn't be able to login forever
-    if (!isValid) {
-      throw new customError.Unauthenticated("Invalid Credentials");
-    }
-    refreshToken = existingToken.refreshToken;
-    attachCookiesToResponse(res, tokenUser, refreshToken);
-    res.status(StatusCodes.OK).json({ message: "User logged in" });
-    return;
-  }
-
-  refreshToken = crypto.randomBytes(40).toString("hex");
-  const userAgent = req.headers["user-agent"];
-  const ip = req.ip;
-  const userToken = { refreshToken, ip, userAgent, user: user._id };
-
-  await RefreshToken.create(userToken);
-
-  attachCookiesToResponse(res, tokenUser, refreshToken);
-
-  res.status(StatusCodes.OK).json({ message: "User logged in" });
+  res.status(StatusCodes.OK).json({ message: "User logged in", jwt });
 };
 
 const forgotPassword = async (req, res) => {
