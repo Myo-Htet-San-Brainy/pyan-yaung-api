@@ -6,7 +6,7 @@ const authorizeUser = async (req, res, next) => {
 
   try {
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      throw new UnauthenticatedError("No token provided");
+      throw new customError.Unauthenticated("Sorry Please try again later.");
     }
     const token = authHeader.split(" ")[1];
     const payload = isTokenValid(token);

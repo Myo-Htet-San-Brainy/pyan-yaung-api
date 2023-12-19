@@ -49,7 +49,7 @@ const deleteSingleProduct = async (req, res) => {
 
 const uploadProductImage = async (req, res) => {
   const dataAboutUpload = await cloudinary.uploader.upload(
-    req.files.car.tempFilePath,
+    req.files.image.tempFilePath,
     {
       use_filename: true,
       folder: "pyan-pyaung",
