@@ -24,7 +24,7 @@ const register = async (req, res) => {
     password,
     verificationToken,
   });
-  const origin = "https://21dayshabitreminder.netlify.app";
+  const origin = "http://localhost:5173";
 
   await sendVerificationEmail(
     user.username,
@@ -35,7 +35,7 @@ const register = async (req, res) => {
   // send verification token back only while testing in postman!!!
   res.status(StatusCodes.CREATED).json({
     message:
-      "Success! Please check your email inbox for email verification link",
+      "Success! Before proceeding, please check your email inbox for email verification link",
     verificationToken,
   });
 };
@@ -112,6 +112,12 @@ const login = async (req, res) => {
 
   if (!isPasswordCorrect) {
     throw new customError.Unauthenticated("Invalid Credentials");
+  }
+
+  if (!user.isVerified) {
+    throw new customError.Unauthorized(
+      "Please verify email first before logging in."
+    );
   }
 
   //create jwt to send
@@ -191,16 +197,7 @@ const logout = async (req, res) => {
 };
 
 const isUserLoggedIn = async (req, res) => {
-  const { refreshToken, accessToken } = req.signedCookies;
-  if (accessToken) {
-    res.status(StatusCodes.OK).json({ isUserLoggedIn: true });
-    return;
-  }
-  if (refreshToken) {
-    res.status(StatusCodes.OK).json({ isUserLoggedIn: true });
-    return;
-  }
-  res.status(StatusCodes.OK).json({ isUserLoggedIn: false });
+  res.status(StatusCodes.OK).json({ data: req.user });
 };
 
 module.exports = {

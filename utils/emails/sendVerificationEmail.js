@@ -7,12 +7,12 @@ const sendVerificationEmail = async (
   verificationToken,
   origin
 ) => {
-  const verifyEmail = `${origin}/verify?email=${email}&token=${verificationToken}`;
-  const body = `<h4>Hello ${name},</h4><p>Please verify your 21days email by clicking on the following link: <a href= ${verifyEmail}>Verify Email</a></p>`;
+  const verifyEmail = `${origin}/verify?email=${email}&verificationToken=${verificationToken}`;
+  const body = `<h4>Hello ${name},</h4><p>Please verify your Pyan Yaung email by clicking on the following link: <a href= ${verifyEmail}>Verify Email</a></p>`;
   const msg = {
     to: email, // Change to your recipient
     from: "myohtetsandrinksmilk@gmail.com", // Change to your verified sender
-    subject: "21days Email Verification",
+    subject: "Pyan Yaung Email Verification",
     html: body,
   };
   await sgMail.send(msg);
