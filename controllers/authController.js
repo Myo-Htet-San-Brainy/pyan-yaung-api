@@ -36,7 +36,6 @@ const register = async (req, res) => {
   res.status(StatusCodes.CREATED).json({
     message:
       "Success! Before proceeding, please check your email inbox for email verification link",
-    verificationToken,
   });
 };
 
@@ -62,7 +61,8 @@ const sendVerificationEmailAgain = async (req, res) => {
       "This email address is already verified. Try to log in."
     );
   }
-  const origin = "http://localhost:3000";
+  const origin = "http://localhost:5173";
+
   await sendVerificationEmail(
     user.username,
     user.email,
@@ -72,7 +72,6 @@ const sendVerificationEmailAgain = async (req, res) => {
   res.status(StatusCodes.OK).json({
     message:
       "Success! Please check your email inbox for email verification link",
-    verificationToken,
   });
 };
 

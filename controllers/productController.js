@@ -1,6 +1,7 @@
 //packages
 var cloudinary = require("cloudinary").v2;
 const { StatusCodes } = require("http-status-codes");
+const fs = require("fs");
 
 //imports
 const Product = require("../models/productModel");
@@ -55,6 +56,8 @@ const uploadProductImage = async (req, res) => {
       folder: "pyan-pyaung",
     }
   );
+  //
+  fs.unlinkSync(req.files.image.tempFilePath);
   res.status(StatusCodes.OK).json({ data: dataAboutUpload.secure_url });
 };
 
