@@ -30,7 +30,7 @@ app.set("trust proxy", 1);
 app.use(helmet());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://pyan-yaung.netlify.app",
   })
 );
 app.use(xss());

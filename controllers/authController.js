@@ -24,7 +24,7 @@ const register = async (req, res) => {
     password,
     verificationToken,
   });
-  const origin = "http://localhost:5173";
+  const origin = "https://pyan-yaung.netlify.app";
 
   await sendVerificationEmail(
     user.username,
@@ -61,7 +61,7 @@ const sendVerificationEmailAgain = async (req, res) => {
       "This email address is already verified. Try to log in."
     );
   }
-  const origin = "http://localhost:5173";
+  const origin = "https://pyan-yaung.netlify.app";
 
   await sendVerificationEmail(
     user.username,
