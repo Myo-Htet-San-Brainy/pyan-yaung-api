@@ -28,9 +28,13 @@ require("./config/cloudinaryConfig");
 app.use(morgan("tiny"));
 app.set("trust proxy", 1);
 app.use(helmet());
+const allowedOrigins = [
+  "https://pyan-yaung.netlify.app",
+  "http://localhost:5173",
+];
 app.use(
   cors({
-    origin: "https://pyan-yaung.netlify.app",
+    origin: allowedOrigins,
   })
 );
 app.use(xss());
