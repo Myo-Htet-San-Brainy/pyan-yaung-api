@@ -18,6 +18,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide product category."],
     },
+    currencyType: {
+      type: String,
+      required: [true, "Please provide product category."],
+    },
     image: {
       type: String,
       required: [true, "Please provide product image."],
